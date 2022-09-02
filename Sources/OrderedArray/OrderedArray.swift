@@ -4,9 +4,14 @@ import Combine
 @available(macOS 10.15, *)
 public class OrderedArray<T: Comparable & ObservableObject>: ObservableObject {
     
-    private var itemChangedSubscription: [AnyCancellable] = []
+    private var itemChangedSubscription: [AnyCancellable]
     
-    @Published public private(set) var array: [T] = []
+    @Published public private(set) var array: [T]
+    
+    public init() {
+        self.itemChangedSubscription = []
+        self.array = []
+    }
     
     public func contains(_ item: T) -> Bool {
         return array.contains(item)
@@ -21,9 +26,27 @@ public class OrderedArray<T: Comparable & ObservableObject>: ObservableObject {
        return false
     }
     
+    public func contains(condition: (_ nthItem: T) -> Bool) -> Bool {
+        for nthItem in array {
+            if condition(nthItem) {
+                return true
+            }
+        }
+       return false
+    }
+    
     public func find(_ item: T, condition: (_ nthItem: T, _ item: T) -> Bool) -> T? {
         for nthItem in array {
             if condition(nthItem, item) {
+                return nthItem
+            }
+        }
+        return nil
+    }
+    
+    public func find(condition: (_ nthItem: T) -> Bool) -> T? {
+        for nthItem in array {
+            if condition(nthItem) {
                 return nthItem
             }
         }
