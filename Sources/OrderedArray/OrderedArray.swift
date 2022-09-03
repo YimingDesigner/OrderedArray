@@ -17,15 +17,6 @@ public class OrderedArray<T: Comparable & ObservableObject>: ObservableObject {
         return array.contains(item)
     }
     
-    public func contains(_ item: T, condition: (_ nthItem: T, _ item: T) -> Bool) -> Bool {
-        for nthItem in array {
-            if condition(nthItem, item) {
-                return true
-            }
-        }
-       return false
-    }
-    
     public func contains(condition: (_ nthItem: T) -> Bool) -> Bool {
         for nthItem in array {
             if condition(nthItem) {
@@ -33,15 +24,6 @@ public class OrderedArray<T: Comparable & ObservableObject>: ObservableObject {
             }
         }
        return false
-    }
-    
-    public func find(_ item: T, condition: (_ nthItem: T, _ item: T) -> Bool) -> T? {
-        for nthItem in array {
-            if condition(nthItem, item) {
-                return nthItem
-            }
-        }
-        return nil
     }
     
     public func find(condition: (_ nthItem: T) -> Bool) -> T? {
